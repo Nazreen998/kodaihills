@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GPS Check-in</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ CONFIG: paste your Web App /exec URL and token -->
+  <script>
+    window.GS_URL = "https://script.google.com/macros/s/AKfycbw_0O37Cg3Ya4bKJeCSe1r8Y_YqMOB9sD2LsFrz9N6zJE640XKZ3lVuAT1lZTcYjM5saw/exec";
+    window.SUBMIT_TOKEN = "e86027e87257dad4bb24939ea728328100b41cffaebc8d8aa971a1c702eb45e9c0760d59d183b7523c85e944830221ac921cfbd1f9c1ed07d427eb63b40319bb";
+  </script>
+
+  <!-- ✅ One EXIF library only -->
+  <script src="https://cdn.jsdelivr.net/npm/exifr@7/dist/full.umd.js"></script>
+
+  <!-- ✅ Single app script -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="card">
+    <h1>ABHINAV AGENCY</h1>
+
+    <label class="block">Upload GPS Photo (JPEG/HEIC):
+      <input id="photo" type="file" accept="image/*" capture="environment">
+    </label>
+
+    <div id="previewWrap" class="preview hide">
+      <img id="preview" alt="preview">
+    </div>
+
+    <div class="grid">
+      <label>Latitude
+        <input id="lat" type="number" step="any" placeholder="12.345678">
+      </label>
+      <label>Longitude
+        <input id="lng" type="number" step="any" placeholder="77.123456">
+      </label>
+    </div>
+
+    <div class="grid">
+      <label>Vehicle No
+        <input id="vehicle" type="text" placeholder="TNxx1234">
+      </label>
+      <label>Person Name
+        <input id="person" type="text" placeholder="Your name">
+      </label>
+    </div>
+
+    <div class="row">
+      <a id="maps" class="link" href="#" target="_blank" rel="noopener">Open in Maps</a>
+      <button id="submitBtn" class="btn">Submit</button>
+    </div>
+
+    <p id="status" class="status"></p>
+  </main>
+
+  <div id="popup" class="popup hide">
+    <div class="popup-card">
+      <h2 id="popupTitle"></h2>
+      <p id="popupMsg"></p>
+      <button id="okBtn" class="btn">OK</button>
+    </div>
+  </div>
+  
+
+</body>
+</html>
