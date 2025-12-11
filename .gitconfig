@@ -1,0 +1,11 @@
+[user]
+	name = Nazreen998
+	email = nareenbegam1998@gmail.com
+	emain = Nazreenbegam1998@gmail.com
+	mail = nazreenbegam1998@gmail.com
+[core]
+	editor = \"C:\\Users\\Admin\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code\" --wait
+[credential]
+	helper = manager
+[init]
+	defaultBranch = main

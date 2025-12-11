@@ -1,69 +1,144 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>GPS Check-in</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>GPS Check-in · ABHINAV AGENCY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
 
   <!-- ✅ CONFIG: paste your Web App /exec URL and token -->
   <script>
-    window.GS_URL = "https://script.google.com/macros/s/AKfycbw_0O37Cg3Ya4bKJeCSe1r8Y_YqMOB9sD2LsFrz9N6zJE640XKZ3lVuAT1lZTcYjM5saw/exec";
+    window.GS_URL = "https://script.google.com/macros/s/AKfycbziWC19IuyTinvOcB3xbWaijUvavXoqAjDxSH8QEZE5SmoOrYLRZGQdGZH7YUWtPEyuaw/exec";
     window.SUBMIT_TOKEN = "e86027e87257dad4bb24939ea728328100b41cffaebc8d8aa971a1c702eb45e9c0760d59d183b7523c85e944830221ac921cfbd1f9c1ed07d427eb63b40319bb";
   </script>
 
-  <!-- ✅ One EXIF library only -->
+  <!-- ✅ EXIF reader (JPEG/HEIC) -->
   <script src="https://cdn.jsdelivr.net/npm/exifr@7/dist/full.umd.js"></script>
 
-  <!-- ✅ Single app script -->
+  <!-- ✅ App JS -->
   <script src="script.js" defer></script>
 </head>
 <body>
+  <!-- Gradient background decoration -->
+  <div class="bg-wrap">
+    <div class="bg-grad"></div>
+    <div class="bg-accent"></div>
+  </div>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">A</span>
+      <div class="brand-text">
+        <strong>ABHINAV AGENCY</strong>
+        <small>GPS Check-in</small>
+      </div>
+    </div>
+    <div class="status-pill">
+      <i class="fa-solid fa-satellite-dish"></i> Live
+    </div>
+  </header>
+
   <main class="card">
-    <h1>ABHINAV AGENCY</h1>
 
-    <label class="block">Upload GPS Photo (JPEG/HEIC):
-      <input id="photo" type="file" accept="image/*" capture="environment">
-    </label>
+    <div class="card-head">
+      <div>
+        <h1>Field Check-in</h1>
+        <p class="sub">Capture a GPS photo or use your current location, add vehicle & person, then submit. We’ll auto-match to the nearest shop.</p>
+      </div>
+      <div class="steps">
+        <span class="step active"><i class="fa-solid fa-camera"></i> Photo</span>
+        <span class="step"><i class="fa-solid fa-location-crosshairs"></i> Location</span>
+        <span class="step"><i class="fa-solid fa-van-shuttle"></i> Vehicle</span>
+        <span class="step"><i class="fa-solid fa-paper-plane"></i> Submit</span>
+      </div>
+    </div>
 
+    <!-- Capture row -->
+    <div class="capture-row">
+      <button id="openCamBtn" class="btn btn-primary"><i class="fa-solid fa-camera"></i> Open Camera</button>
+
+      <label class="btn btn-ghost file-label">
+        <i class="fa-solid fa-image"></i> Choose Photo
+        <input id="photo" type="file" accept="image/jpeg,image/heic" capture="environment" hidden>
+      </label>
+
+      <a id="maps" class="link pill" href="#" target="_blank" rel="noopener">
+        <i class="fa-solid fa-map-location-dot"></i> Open in Maps
+      </a>
+    </div>
+
+    <!-- Preview -->
     <div id="previewWrap" class="preview hide">
       <img id="preview" alt="preview">
     </div>
 
+    <!-- Coordinates -->
     <div class="grid">
-      <label>Latitude
+      <label class="input-wrap">
+        <span class="ilabel"><i class="fa-solid fa-location-dot"></i> Latitude</span>
         <input id="lat" type="number" step="any" placeholder="12.345678">
       </label>
-      <label>Longitude
+      <label class="input-wrap">
+        <span class="ilabel"><i class="fa-solid fa-location-dot"></i> Longitude</span>
         <input id="lng" type="number" step="any" placeholder="77.123456">
       </label>
     </div>
 
+    <!-- Person / Vehicle -->
     <div class="grid">
-      <label>Vehicle No
+      <label class="input-wrap">
+        <span class="ilabel"><i class="fa-solid fa-id-badge"></i> Vehicle No</span>
         <input id="vehicle" type="text" placeholder="TNxx1234">
       </label>
-      <label>Person Name
+      <label class="input-wrap">
+        <span class="ilabel"><i class="fa-solid fa-user"></i> Person Name</span>
         <input id="person" type="text" placeholder="Your name">
       </label>
     </div>
 
-    <div class="row">
-      <a id="maps" class="link" href="#" target="_blank" rel="noopener">Open in Maps</a>
-      <button id="submitBtn" class="btn">Submit</button>
+    <!-- Actions -->
+    <div class="row actions">
+      <button id="locBtn" class="btn btn-soft"><i class="fa-solid fa-crosshairs"></i> Use My Location</button>
+      <button id="submitBtn" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit</button>
     </div>
 
     <p id="status" class="status"></p>
   </main>
 
+  <!-- Camera modal -->
+  <div id="camModal" class="popup hide">
+    <div class="popup-card cam-card">
+      <h2><i class="fa-solid fa-camera-retro"></i> Camera</h2>
+      <video id="camVideo" autoplay playsinline></video>
+      <div class="row" style="gap:10px">
+        <button id="snapBtn" class="btn btn-primary"><i class="fa-solid fa-bullseye"></i> Capture</button>
+        <button id="closeCamBtn" class="btn btn-ghost"><i class="fa-solid fa-xmark"></i> Close</button>
+      </div>
+      <canvas id="snapCanvas" hidden></canvas>
+    </div>
+  </div>
+
+  <!-- Result popup -->
   <div id="popup" class="popup hide">
     <div class="popup-card">
       <h2 id="popupTitle"></h2>
       <p id="popupMsg"></p>
-      <button id="okBtn" class="btn">OK</button>
+      <button id="okBtn" class="btn btn-primary" type="button">OK</button>
     </div>
   </div>
-  
 
+  <!-- Footer -->
+  <footer class="footer">
+    <span><i class="fa-solid fa-shield-halved"></i> Token-secured</span>
+    <span><i class="fa-solid fa-database"></i> Google Sheet logging</span>
+    <span><i class="fa-solid fa-location-dot"></i> Auto match to nearest shop</span>
+  </footer>
 </body>
 </html>
