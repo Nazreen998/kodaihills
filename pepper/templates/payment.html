@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Payment</title>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body style="background:black;color:white;text-align:center;padding:100px">
+
+<h1>Complete Payment</h1>
+
+<button id="pay-btn">Pay Now</button>
+
+<script>
+
+var options = {
+
+"key": "{{key}}",
+
+"amount": "{{payment.amount}}",
+
+"currency": "INR",
+
+"name": "Kodai Hill Spices",
+
+"description": "Pepper Order",
+
+"order_id": "{{payment.id}}",
+
+handler: function (response){
+
+window.location.href="/order-success";
+
+}
+
+};
+
+var rzp = new Razorpay(options);
+
+document.getElementById('pay-btn').onclick = function(e){
+
+rzp.open();
+
+e.preventDefault();
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+background:#0f0f0f;
+color:white;
+font-family:Poppins;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.login-box{
+background:#1a1a1a;
+padding:40px;
+border-radius:15px;
+width:350px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.5);
+}
+
+.login-box h2{
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-bottom:15px;
+border:none;
+border-radius:6px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#7CFC00;
+border:none;
+border-radius:6px;
+font-weight:600;
+cursor:pointer;
+}
+
+button:hover{
+background:#6ae000;
+}
+
+a{
+color:#7CFC00;
+text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+<h2>Login</h2>
+
+<form method="post">
+
+{% csrf_token %}
+
+<input type="text" name="username" placeholder="Username" required>
+
+<input type="password" name="password" placeholder="Password" required>
+
+<button type="submit">Login</button>
+
+</form>
+
+<p style="margin-top:10px">
+Don't have account? <a href="/register">Register</a>
+</p>
+
+</div>
+
+</body>
+</html>
