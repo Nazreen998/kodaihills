@@ -9,13 +9,23 @@ def product(request):
     return render(request,'index.html',{'a':a})
 
 def add_cart(request,id):
+
+    if not request.user.is_authenticated:
+        return redirect('/login')
+
     product = Data.objects.get(id=id)
-    Cart.objects.create(product=product,quantity=1)
+
+    Cart.objects.create(
+        user=request.user,
+        product=product,
+        quantity=1
+    )
+
     return redirect('/cart')
 
 def view_cart(request):
 
-    cart_items = Cart.objects.all()
+    cart_items = Cart.objects.filter(user=request.user)
 
     total = 0
 
@@ -31,7 +41,7 @@ def checkout(request):
     if not request.user.is_authenticated:
         return redirect('/login')
 
-    cart_items = Cart.objects.all()
+    cart_items = Cart.objects.filter(user=request.user)
 
     subtotal = 0
     for item in cart_items:
@@ -69,7 +79,7 @@ def checkout(request):
                 total_amount=total
             )
 
-            Cart.objects.all().delete()
+            Cart.objects.filter(user=request.user).delete()
 
             return redirect('/order-success')
 

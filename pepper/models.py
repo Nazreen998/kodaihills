@@ -7,8 +7,13 @@ class Data(models.Model):
     amount = models.IntegerField()
 
 
+
 class Cart(models.Model):
+
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
     product = models.ForeignKey(Data,on_delete=models.CASCADE)
+
     quantity = models.IntegerField(default=1)
 
 class Order(models.Model):
