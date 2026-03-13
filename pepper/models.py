@@ -8,7 +8,8 @@ class Data(models.Model):
 
 
 class Cart(models.Model):
-    product = models.ForeignKey(Data,on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    product = models.ForeignKey(Data, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
 class Order(models.Model):

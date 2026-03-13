@@ -8,14 +8,33 @@ def product(request):
     a = Data.objects.all()
     return render(request,'index.html',{'a':a})
 
-def add_cart(request,id):
-    product = Data.objects.get(id=id)
-    Cart.objects.create(product=product,quantity=1)
+def add_cart(request, product_id):
+
+    if not request.user.is_authenticated:
+        return redirect('/login')
+
+    item_product = Data.objects.get(id=product_id)
+
+    cart_item = Cart.objects.filter(
+        user=request.user,
+        product=item_product
+    ).first()
+
+    if cart_item:
+        cart_item.quantity += 1
+        cart_item.save()
+    else:
+        Cart.objects.create(
+            user=request.user,
+            product=item_product,
+            quantity=1
+        )
+
     return redirect('/cart')
 
 def view_cart(request):
 
-    cart_items = Cart.objects.all()
+    cart_items = Cart.objects.filter(user=request.user)
 
     total = 0
 
@@ -31,7 +50,7 @@ def checkout(request):
     if not request.user.is_authenticated:
         return redirect('/login')
 
-    cart_items = Cart.objects.all()
+    cart_items = Cart.objects.filter(user=request.user)
 
     subtotal = 0
     for item in cart_items:
@@ -69,7 +88,7 @@ def checkout(request):
                 total_amount=total
             )
 
-            Cart.objects.all().delete()
+            Cart.objects.filter(user=request.user).delete()
 
             return redirect('/order-success')
 
@@ -114,19 +133,19 @@ def checkout(request):
         'profile': profile
     })
 
-def remove_cart(request,id):
-    item = Cart.objects.get(id=id)
+def remove_cart(request,cart_id):
+    item = Cart.objects.get(id=cart_id,user=request.user)
     item.delete()
     return redirect('/cart')
 
-def increase_qty(request,id):
-    item = Cart.objects.get(id=id)
+def increase_qty(request,cart_id):
+    item = Cart.objects.get(id=cart_id,user=request.user)
     item.quantity += 1
     item.save()
     return redirect('/cart')
 
-def decrease_qty(request,id):
-    item = Cart.objects.get(id=id)
+def decrease_qty(request,cart_id):
+    item = Cart.objects.get(id=cart_id)
 
     if item.quantity > 1:
         item.quantity -= 1
