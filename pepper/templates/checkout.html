@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Checkout</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins;
+}
+
+body{
+background:#0f0f0f;
+color:white;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:#111;
+}
+
+.logo{
+color:#7CFC00;
+font-size:22px;
+font-weight:600;
+}
+
+nav ul{
+display:flex;
+gap:30px;
+list-style:none;
+}
+
+nav ul li a{
+color:white;
+text-decoration:none;
+}
+
+nav ul li a:hover{
+color:#7CFC00;
+}
+
+/* CHECKOUT */
+
+.checkout{
+padding:80px 8%;
+display:flex;
+justify-content:center;
+}
+
+.checkout-box{
+background:#1a1a1a;
+padding:40px;
+border-radius:15px;
+width:400px;
+box-shadow:0 10px 25px rgba(0,0,0,0.5);
+}
+
+.checkout-box h1{
+margin-bottom:20px;
+text-align:center;
+}
+
+.total{
+text-align:center;
+margin-bottom:30px;
+font-size:20px;
+color:#7CFC00;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-bottom:15px;
+border:none;
+border-radius:6px;
+}
+
+button{
+width:100%;
+background:#7CFC00;
+color:black;
+padding:12px;
+border:none;
+border-radius:6px;
+font-weight:600;
+cursor:pointer;
+}
+
+button:hover{
+background:#6ae000;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">KODAI HILL SPICES</div>
+
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/#products">Products</a></li>
+<li><a href="/#gallery">Gallery</a></li>
+<li><a href="/#contact">Contact</a></li>
+</ul>
+
+</nav>
+
+
+<section class="checkout">
+
+<div class="checkout-box">
+
+<h1>Checkout</h1>
+
+<div class="total">
+<div class="total">
+Subtotal : ₹ {{subtotal}} <br>
+Shipping : ₹ {{shipping}}
+
+<p style="font-size:13px;color:#aaa;">
+Free Delivery for orders above ₹500
+</p>
+
+<b>Total Amount : ₹ {{total}}</b>
+</div>
+</div>
+
+<form method="post">
+
+{% csrf_token %}
+<input type="checkbox" onclick="fillAddress()"> Use saved address
+
+<input type="text" name="name"
+value="{{request.user.username}}" required>
+
+<input type="text" name="phone"
+value="{{profile.phone}}" required>
+
+<input type="email" name="email"
+value="{{profile.email}}" required>
+
+<input type="text" name="address"
+value="{{profile.address}}" required>
+
+<input type="text" name="pincode"
+value="{{profile.pincode}}" required>
+
+
+<select name="district" required>
+
+<option value="">Select District</option>
+
+<option>Ariyalur</option>
+<option>Chengalpattu</option>
+<option>Chennai</option>
+<option>Coimbatore</option>
+<option>Cuddalore</option>
+<option>Dharmapuri</option>
+<option>Dindigul</option>
+<option>Erode</option>
+<option>Kallakurichi</option>
+<option>Kanchipuram</option>
+<option>Kanyakumari</option>
+<option>Karur</option>
+<option>Krishnagiri</option>
+<option>Madurai</option>
+<option>Mayiladuthurai</option>
+<option>Nagapattinam</option>
+<option>Namakkal</option>
+<option>Nilgiris</option>
+<option>Perambalur</option>
+<option>Pudukkottai</option>
+<option>Ramanathapuram</option>
+<option>Ranipet</option>
+<option>Salem</option>
+<option>Sivagangai</option>
+<option>Tenkasi</option>
+<option>Thanjavur</option>
+<option>Theni</option>
+<option>Thoothukudi</option>
+<option>Tiruchirappalli</option>
+<option>Tirunelveli</option>
+<option>Tirupathur</option>
+<option>Tiruppur</option>
+<option>Tiruvallur</option>
+<option>Tiruvannamalai</option>
+<option>Tiruvarur</option>
+<option>Vellore</option>
+<option>Viluppuram</option>
+<option>Virudhunagar</option>
+
+</select>
+<h3>Payment Method</h3>
+
+<input type="radio" name="payment" value="cod" required> Cash On Delivery
+
+<br><br>
+
+<input type="radio" name="payment" value="upi" required> UPI / Online Payment
+
+<br><br>
+<button type="submit">Confirm Order</button>
+
+</form>
+
+</div>
+
+</section>
+<script>
+
+function fillAddress(){
+
+document.getElementsByName("phone")[0].value="{{profile.phone}}"
+document.getElementsByName("email")[0].value="{{profile.email}}"
+document.getElementsByName("address")[0].value="{{profile.address}}"
+document.getElementsByName("pincode")[0].value="{{profile.pincode}}"
+
+}
+
+</script>
+</body>
+</html>
